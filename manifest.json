@@ -1,7 +1,7 @@
 {
   "id": "gastelai-link",
   "name": "GastelAI-Link",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "minAppVersion": "1.4.0",
   "description": "Zeigt in jeder Notiz einen Knopf, der dieselbe Notiz in der Online-Fassung (GastelAI / akb) öffnet. Adresse einstellbar.",
   "author": "Jonas Prade",

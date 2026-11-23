@@ -169,6 +169,25 @@ class GastelaiLinkPlugin extends obsidian.Plugin {
           + 'auf dem Handy gibt es ihn nicht) — öffne im externen Browser.');
       }
     }
+    this.openExternal(url);
+  }
+
+  /**
+   * Systembrowser. Auf dem Desktop über Electron, denn `window.open` fängt der
+   * Web-Viewer ab („Externe Links im Web-Viewer öffnen“) und öffnet intern.
+   */
+  openExternal(url) {
+    if (!(obsidian.Platform && obsidian.Platform.isMobile)) {
+      try {
+        const { shell } = require('electron');
+        if (shell && typeof shell.openExternal === 'function') {
+          shell.openExternal(url);
+          return;
+        }
+      } catch (e) {
+        console.warn('GastelAI-Link: shell.openExternal nicht verfügbar, nutze window.open', e);
+      }
+    }
     window.open(url, '_blank');
   }
 

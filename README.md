@@ -16,7 +16,7 @@
 2. In den BRAT-Einstellungen *Add Beta plugin* → `JonasPrade/gastelai-obsidian-button` eintragen → *Add Plugin*.
 3. Unter *Community-Plugins* „GastelAI-Link" aktivieren und in dessen Einstellungen die Adresse eintragen.
 
-BRAT holt neue Versionen beim Start von Obsidian bzw. über den Befehl *BRAT: Check for updates*. Das funktioniert auch auf iPhone/iPad. Ist das Repo privat, braucht BRAT einen GitHub-Token mit Lesezugriff (BRAT-Einstellungen → *Personal access token*).
+BRAT holt neue Versionen beim Start von Obsidian bzw. über den Befehl *BRAT: Check for updates*. Das funktioniert auch auf iPhone/iPad. Das Repo ist öffentlich, ein GitHub-Token ist nicht nötig.
 
 ### Ohne BRAT
 
@@ -28,7 +28,7 @@ Aus dem neuesten [Release](../../releases/latest) `main.js`, `manifest.json` und
 |---|---|
 | Adresse der Online-Fassung | Basis-URL, z. B. `https://gastelai.example.de` |
 | Link-Ziel | `GastelAI – Bereich „Dateien"` → `{base}/?datei=<pfad>` · `akb-memory – Leseansicht` → `{base}/notizen?pfad=<pfad>` (nur Notizen) · `Eigene Vorlage` |
-| Öffnen in | externer Browser (Default) · Obsidian-Web-Viewer im neuen Tab · Web-Viewer rechts daneben. Der Web-Viewer ist ein Kern-Plugin (Obsidian ≥ 1.8, nur Desktop) und muss unter *Kern-Plugins* aktiviert sein; sonst und auf dem Handy öffnet der externe Browser. Im Web-Viewer meldet man sich einmal separat an |
+| Öffnen in | externer Browser (Default; auf dem Desktop direkt der Systembrowser, auch wenn der Web-Viewer externe Links abfangen würde) · Obsidian-Web-Viewer im neuen Tab · Web-Viewer rechts daneben. Der Web-Viewer ist ein Kern-Plugin (Obsidian ≥ 1.8, nur Desktop) und muss unter *Kern-Plugins* aktiviert sein; sonst und auf dem Handy öffnet der externe Browser. Im Web-Viewer meldet man sich einmal separat an |
 | Eigene Vorlage | Platzhalter `{base}` `{path}` `{pathNoExt}` `{name}` `{basename}`; alle außer `{base}` werden URL-kodiert |
 | Ordner im lokalen Vault | nur nötig, wenn der Online-Vault einem Unterordner des Obsidian-Vaults entspricht — der Ordner wird vom Pfad abgeschnitten, Dateien außerhalb bekommen keinen Link |
 | Knopf / Statusleiste / linke Leiste | einzeln ein- und ausschaltbar |
