@@ -1,0 +1,21 @@
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Versionen stimmen überein
+        run: |
+          m=$(node -p "require('./manifest.json').version")
+          p=$(node -p "require('./package.json').version")
+          v=$(node -p "Object.keys(require('./versions.json')).includes('$m')")
+          test "$m" = "$p" || { echo "manifest.json ($m) ≠ package.json ($p)"; exit 1; }
+          test "$v" = "true" || { echo "versions.json kennt $m nicht"; exit 1; }

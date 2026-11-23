@@ -1,0 +1,27 @@
+# Release für BRAT bzw. manuelle Installation: Tag = Version aus manifest.json
+# (ohne „v“, Obsidian-Konvention), z. B. `git tag 1.2.0 && git push origin 1.2.0`.
+name: release
+on:
+  push:
+    tags: ['*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Tag passt zur Version im Manifest
+        run: |
+          m=$(node -p "require('./manifest.json').version")
+          test "$m" = "${GITHUB_REF_NAME}" || { echo "Tag ${GITHUB_REF_NAME} ≠ manifest.json $m"; exit 1; }
+      - name: Release mit den drei Plugin-Dateien
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" main.js manifest.json styles.css \
+            --title "${GITHUB_REF_NAME}" --generate-notes

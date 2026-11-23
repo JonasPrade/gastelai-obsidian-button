@@ -1,0 +1,10 @@
+.gastelai-link-status {
+  cursor: pointer;
+}
+.gastelai-link-status:hover {
+  color: var(--text-accent);
+}
+.gastelai-link-status.is-disabled {
+  opacity: 0.5;
+  cursor: default;
+}
