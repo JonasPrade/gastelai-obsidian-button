@@ -1,8 +1,12 @@
-# Release für BRAT bzw. manuelle Installation: Tag = Version aus manifest.json
-# (ohne „v“, Obsidian-Konvention), z. B. `git tag 1.2.0 && git push origin 1.2.0`.
+# Release für BRAT bzw. manuelle Installation. Tag = Version aus manifest.json
+# (ohne „v“, Obsidian-Konvention).
+# Zwei Wege: Tag pushen (`git tag 1.2.0 && git push origin 1.2.0`) oder einfach
+# auf main pushen – gibt es zur Manifest-Version noch kein Release, wird es samt
+# Tag angelegt.
 name: release
 on:
   push:
+    branches: [main]
     tags: ['*']
 permissions:
   contents: write
@@ -15,13 +19,24 @@ jobs:
         with:
           node-version: 22
       - run: npm test
-      - name: Tag passt zur Version im Manifest
-        run: |
-          m=$(node -p "require('./manifest.json').version")
-          test "$m" = "${GITHUB_REF_NAME}" || { echo "Tag ${GITHUB_REF_NAME} ≠ manifest.json $m"; exit 1; }
-      - name: Release mit den drei Plugin-Dateien
+      - name: Version bestimmen
+        id: v
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" main.js manifest.json styles.css \
-            --title "${GITHUB_REF_NAME}" --generate-notes
+          m=$(node -p "require('./manifest.json').version")
+          echo "version=$m" >> "$GITHUB_OUTPUT"
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            test "$m" = "${GITHUB_REF_NAME}" || { echo "Tag ${GITHUB_REF_NAME} ≠ manifest.json $m"; exit 1; }
+          fi
+          if gh release view "$m" >/dev/null 2>&1; then
+            echo "Release $m gibt es schon – nichts zu tun."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Release mit den drei Plugin-Dateien
+        if: steps.v.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.v.outputs.version }}" main.js manifest.json styles.css \
+            --target "${GITHUB_SHA}" --title "${{ steps.v.outputs.version }}" --generate-notes

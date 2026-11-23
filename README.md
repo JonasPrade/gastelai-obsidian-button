@@ -56,7 +56,7 @@ prüft die Link-Bildung ohne Obsidian (`test_link.mjs`) und die Syntax von `main
 ### Neue Version veröffentlichen
 
 1. Version in `manifest.json` und `package.json` erhöhen, in `versions.json` die Zeile `"<version>": "<minAppVersion>"` ergänzen.
-2. Commit auf `main`, dann Tag ohne „v" setzen und pushen:
+2. Commit auf `main` pushen. Gibt es zur Manifest-Version noch kein Release, legt der Workflow `release` es samt Tag an. Alternativ Tag ohne „v" selbst setzen und pushen:
 
 ```bash
 git tag 1.2.0
